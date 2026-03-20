@@ -1,0 +1,26 @@
+<table class="w-full border-collapse overflow-hidden rounded-lg border border-slate-200">
+	<thead class="bg-slate-50">
+		<tr>
+			{{#each columns}}
+				<th class="border-b border-slate-200 px-6 py-3 text-left text-sm font-semibold text-slate-900">
+					{{#if label}}{{label}}{{else}}{{this}}{{/if}}
+				</th>
+			{{/each}}
+		</tr>
+	</thead>
+	<tbody>
+		{{#each rows}}
+			<tr class="border-b border-slate-200 transition hover:bg-slate-50">
+				{{#each ../columns}}
+					<td class="px-6 py-4 text-sm text-slate-700">
+						{{#if custom}}
+							{{lookup ../this (lookup ../fieldMap this)}}
+						{{else}}
+							{{lookup ../this (lookup ../fieldMap this)}}
+						{{/if}}
+					</td>
+				{{/each}}
+			</tr>
+		{{/each}}
+	</tbody>
+</table>

@@ -1,0 +1,40 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 {{backdropClass}}">
+	<div class="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+		{{#if showClose}}
+			<button
+				type="button"
+				onclick="this.closest('.modal').classList.add('hidden')"
+				class="absolute right-4 top-4 text-slate-400 transition hover:text-slate-600"
+			>
+				<span class="text-2xl">&times;</span>
+			</button>
+		{{/if}}
+
+		{{#if title}}
+			<h2 class="text-xl font-bold text-slate-900">{{title}}</h2>
+		{{/if}}
+
+		{{#if description}}
+			<p class="mt-2 text-sm text-slate-600">{{description}}</p>
+		{{/if}}
+
+		{{#if content}}
+			<div class="mt-6">
+				{{{content}}}
+			</div>
+		{{/if}}
+
+		{{#if actions}}
+			<div class="mt-6 flex gap-3">
+				{{#each actions}}
+					<button
+						type="button"
+						class="flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition {{class}}"
+					>
+						{{label}}
+					</button>
+				{{/each}}
+			</div>
+		{{/if}}
+	</div>
+</div>

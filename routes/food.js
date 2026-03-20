@@ -42,7 +42,7 @@ router.delete('/:id', authenticate, async (req, res, next) => {
   try {
     const food = await Food.findById(req.params.id);
     if (!food) return res.status(404).json({ message: 'Food not found' });
-    await food.remove();
+    await food.deleteOne();
     res.json({ message: 'Food deleted successfully' });
   } catch (error) {
     next(error);

@@ -1,0 +1,43 @@
+<form action="{{action}}" method="{{method}}" class="space-y-4">
+	{{#each fields}}
+		<div class="flex flex-col gap-1.5">
+			{{#if label}}
+				<label for="{{name}}" class="block text-sm font-semibold text-slate-700">{{label}}</label>
+			{{/if}}
+			{{#if isTextarea}}
+				<textarea
+					id="{{name}}"
+					name="{{name}}"
+					placeholder="{{placeholder}}"
+					rows="{{rows}}"
+					class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-500 transition focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300/30 {{className}}"
+					{{#if required}}required{{/if}}
+				></textarea>
+			{{else}}
+				<input
+					type="{{type}}"
+					id="{{name}}"
+					name="{{name}}"
+					placeholder="{{placeholder}}"
+					class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-500 transition focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300/30 {{className}}"
+					{{#if required}}required{{/if}}
+					{{#if minLength}}minlength="{{minLength}}"{{/if}}
+					{{#if maxLength}}maxlength="{{maxLength}}"{{/if}}
+					{{#if pattern}}pattern="{{pattern}}"{{/if}}
+				/>
+			{{/if}}
+			{{#if hint}}
+				<p class="text-xs text-slate-500">{{hint}}</p>
+			{{/if}}
+		</div>
+	{{/each}}
+
+	{{#if submitLabel}}
+		<button
+			type="submit"
+			class="w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition {{submitClass}}"
+		>
+			{{submitLabel}}
+		</button>
+	{{/if}}
+</form>

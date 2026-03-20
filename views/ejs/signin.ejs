@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-0">
+        <div
+          class="absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-cyan-400/15 blur-3xl"
+        ></div>
+        <div
+          class="absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-sky-300/10 blur-3xl"
+        ></div>
+      </div>
+
+      <main
+        class="relative z-10 mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6 py-12"
+      >
+        <div class="w-full">
+          <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold">Sign in</h1>
+            <p class="mt-2 text-sm text-slate-400">Access your dashboard</p>
+          </div>
+
+          <div
+            class="rounded-2xl border border-slate-200 bg-white p-8 shadow-lg"
+          >
+            <% if (error) { %>
+              <div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+                <p class="text-sm font-semibold text-red-700"><%= error %></p>
+              </div>
+            <% } %>
+            <%- formHtml %>
+
+            <div class="mt-6 border-t border-slate-200 pt-6">
+              <p class="text-center text-sm text-slate-700">
+                Don't have an account?
+                <a
+                  href="/auth/signup"
+                  class="font-semibold text-cyan-600 hover:text-cyan-700"
+                >
+                  Sign up
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <p class="mt-8 text-center text-xs text-slate-500">
+            By signing in, you agree to our
+            <a href="#" class="underline hover:text-slate-400">Terms</a>
+            and
+            <a href="#" class="underline hover:text-slate-400"
+              >Privacy Policy</a
+            >
+          </p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

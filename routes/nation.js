@@ -9,7 +9,7 @@ router.get('/', authenticate, async function(req, res, next) {
   res.json(nations);
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticate, async (req, res, next) => {
   try {
     const nation = new Nation(req.body);
     await nation.save();
@@ -48,7 +48,7 @@ router.delete('/:id', authenticate, async (req, res, next) => {
     if (await Food.exists({ nation: nation._id })) {
       return res.status(400).json({ message: 'Cannot delete nation with associated foods' });
     }
-    await nation.remove();
+    await nation.deleteOne();
     res.json({ message: 'Nation deleted successfully' });
   } catch (error) {
     next(error);

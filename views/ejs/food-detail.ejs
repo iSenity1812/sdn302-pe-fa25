@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= food.foodName %> - Shop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+    <style>
+      .font-aleo {
+        font-family: 'Alice', serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-white">
+    <!-- Navigation -->
+    <nav class="border-b border-slate-200 bg-white shadow-sm">
+      <div class="mx-auto max-w-7xl px-6 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/page/foods" class="text-2xl font-bold text-slate-900 font-aleo">
+            FoodShop
+          </a>
+          <a href="/auth/logout" class="text-sm font-semibold text-slate-600 hover:text-slate-900">
+            Logout
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Product Detail -->
+    <main class="mx-auto max-w-7xl px-6 py-12">
+      <!-- Breadcrumb -->
+      <div class="mb-8 flex items-center space-x-2 text-sm text-slate-600">
+        <a href="/page/foods" class="hover:text-slate-900">Foods</a>
+        <span>/</span>
+        <span class="text-slate-900 font-semibold"><%= food.foodName %></span>
+      </div>
+
+      <div class="grid gap-12 md:grid-cols-2">
+        <!-- Product Image -->
+        <div class="flex items-center justify-center">
+          <div class="h-full w-full rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center overflow-hidden">
+            <% if (food.imageUrl) { %>
+              <img 
+                src="<%= food.imageUrl %>" 
+                alt="<%= food.foodName %>" 
+                class="h-full w-full object-cover"
+              >
+            <% } else { %>
+              <span class="text-6xl">🍽️</span>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="flex flex-col justify-between">
+          <!-- Header -->
+          <div>
+            <!-- Nation Badge -->
+            <div class="mb-4 inline-block">
+              <span class="inline-flex items-center rounded-full bg-cyan-50 px-3 py-1 text-sm font-medium text-cyan-700 border border-cyan-200">
+                📍 <%= food.nationName %>
+              </span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="mb-4 text-4xl font-bold text-slate-900 font-alice">
+              <%= food.foodName %>
+            </h1>
+
+            <!-- Rating -->
+            <div class="mb-6 flex items-center space-x-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-3xl font-bold text-amber-500"><%= food.rating %></span>
+                <span class="text-xl">★</span>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <!-- <div class="mb-6 border-t border-b border-slate-200 py-6">
+              <p class="text-sm text-slate-600 mb-2">Price</p>
+              <p class="text-4xl font-bold text-slate-900 font-aleo">
+                $<%= (Math.random() * 20 + 5).toFixed(2) %>
+              </p>
+            </div> -->
+
+            <!-- Nutritional Info -->
+            <div class="mb-8 grid gap-4 sm:grid-cols-2">
+              <!-- Calories -->
+              <div class="rounded-lg bg-slate-50 p-4">
+                <p class="text-sm text-slate-600 mb-1">Calories</p>
+                <p class="text-2xl font-bold text-slate-900"><%= food.calories %></p>
+              </div>
+
+              <!-- Type -->
+              <div class="rounded-lg bg-slate-50 p-4">
+                <p class="text-sm text-slate-600 mb-1">Type</p>
+                <p class="text-2xl font-bold text-slate-900">
+                  <%= food.isVegetarian ? '🌱 Vegetarian' : '🍖 Non-Veg' %>
+                </p>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-8">
+              <h3 class="mb-3 text-lg font-semibold text-slate-900 font-aleo">About</h3>
+              <p class="text-slate-600 leading-relaxed">
+                Discover the authentic taste of 
+                <span class="font-semibold text-indigo-600"><%= food.nation.nationName %></span>'s culinary excellence. 
+                This delicious 
+                <span class="font-semibold text-green-600"><%= food.foodName.toLowerCase() %></span> 
+                is crafted with premium ingredients and traditional recipes, offering a 
+                <span class="font-semibold text-pink-600">
+                  <%= food.isVegetarian ? 'wholesome vegetarian' : 'hearty meat-based' %>
+                </span> 
+                experience with 
+                <span class="font-semibold text-yellow-600"><%= food.calories %> calories</span> per serving.
+              </p>
+            </div>
+
+            <!-- Features -->
+            <div class="mb-8 grid gap-3">
+              <div class="flex items-center space-x-3">
+                <span class="text-lg">✓</span>
+                <span class="text-slate-700">Premium Quality Ingredients</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-lg">✓</span>
+                <span class="text-slate-700">Authentic Recipe from <span class="font-semibold text-indigo-600"><%= food.nation.nationName %></span></span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-lg">✓</span>
+                <span class="text-cyan-700">
+                  <%= food.isVegetarian ? 'Vegetarian Friendly' : 'Rich in Protein' %>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <!-- <div class="flex gap-4">
+            <button class="flex-1 rounded-lg bg-slate-900 py-4 text-center font-semibold text-white hover:bg-slate-800 transition-colors">
+              🛒 Add to Cart
+            </button>
+            <button class="flex-1 rounded-lg border border-slate-300 py-4 text-center font-semibold text-slate-900 hover:bg-slate-50 transition-colors">
+              ❤️ Save
+            </button>
+          </div> -->
+
+          <!-- Back Button -->
+          <div class="mt-6">
+            <a href="/page/foods" class="text-center block text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">
+              ← Back to Foods
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products Section -->
+      <div class="mt-20 border-t border-slate-200 pt-16">
+        <h2 class="mb-8 text-3xl font-bold text-slate-900 font-aleo">Similar Foods</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <% (relatedFoods || []).slice(0, 3).forEach((cardHtml) => { %>
+            <%- cardHtml %>
+          <% }); %>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 bg-slate-50 py-12 mt-20">
+      <div class="mx-auto max-w-7xl px-6 text-center text-slate-600">
+        <p>© 2025 FoodShop. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -4,8 +4,7 @@ const { generateToken } = require('../config/jwtConfig');
 const { authenticate } = require('../middlewares/authMiddleware');
 const User = require('../models/user');
 
-// POST /auth/login
-router.post('/login', async (req, res, next) => {
+router.post('/signin', async (req, res, next) => {
   try {
     const { name, key } = req.body;
     const user = await User.findOne({ name });
@@ -15,7 +14,7 @@ router.post('/login', async (req, res, next) => {
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
     const token = generateToken({ id: user._id, name: user.name });
-    res.cookie('token', token, { httpOnly: true });
+    // res.cookie('token', token, { httpOnly: true });
     res.json({ message: 'Login successful', user, token });
   } catch (error) {
     next(error);

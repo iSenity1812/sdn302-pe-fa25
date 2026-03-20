@@ -1,0 +1,22 @@
+{{#if href}}
+	<a
+		href="{{href}}"
+		class="inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 {{className}}"
+	>
+		{{#if icon}}
+			<span class="text-base leading-none">{{icon}}</span>
+		{{/if}}
+		<span>{{label}}</span>
+	</a>
+{{else}}
+	<button
+		type="{{type}}"
+		class="inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-60 {{className}}"
+		{{#if disabled}}disabled{{/if}}
+	>
+		{{#if icon}}
+			<span class="text-base leading-none">{{icon}}</span>
+		{{/if}}
+		<span>{{label}}</span>
+	</button>
+{{/if}}

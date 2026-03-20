@@ -81,11 +81,12 @@ pe-fa25/
    Create a `.env` file in the root directory:
 
    ```
-   MONGODB_URI=mongodb://localhost:27017/pe-fa25
+   MONGODB_URI=mongodb://localhost:27017/
+   MONGODB_NAME=your-db-name
    JWT_SECRET=your_jwt_secret_key
    JWT_EXPIRE=7d
    PORT=3000
-   NODE_ENV=development
+   VIEW_ENGINE=ejs
    ```
 
 4. **Ensure MongoDB is running**
