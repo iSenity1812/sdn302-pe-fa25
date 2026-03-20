@@ -66,17 +66,20 @@ pe-fa25/
 ## Installation
 
 1. **Clone or navigate to the project directory**
+
    ```bash
    cd pe-fa25
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env` file in the root directory:
+
    ```
    MONGODB_URI=mongodb://localhost:27017/pe-fa25
    JWT_SECRET=your_jwt_secret_key
@@ -86,11 +89,13 @@ pe-fa25/
    ```
 
 4. **Ensure MongoDB is running**
+
    ```bash
    mongod
    ```
 
 5. **Start the application**
+
    ```bash
    npm start
    ```
@@ -100,13 +105,16 @@ pe-fa25/
 ## API Endpoints
 
 ### Base URL
+
 `/api/v1`
 
 ### Authentication
+
 - `POST /auth/login` - User login (returns JWT token)
 - `GET /auth/me` - Get current user profile (requires authentication)
 
 ### Users
+
 - `GET /users` - Get all users
 - `GET /users/:id` - Get user by ID
 - `POST /users` - Create new user
@@ -114,6 +122,7 @@ pe-fa25/
 - `DELETE /users/:id` - Delete user
 
 ### Foods
+
 - `GET /foods` - Get all foods
 - `GET /foods/:id` - Get food by ID
 - `POST /foods` - Create new food
@@ -121,6 +130,7 @@ pe-fa25/
 - `DELETE /foods/:id` - Delete food
 
 ### Nations
+
 - `GET /nations` - Get all nations
 - `GET /nations/:id` - Get nation by ID
 - `POST /nations` - Create new nation
@@ -132,6 +142,7 @@ pe-fa25/
 This API uses JWT (JSON Web Tokens) for authentication.
 
 1. **Login** to get a token:
+
    ```bash
    curl -X POST http://localhost:3000/api/v1/auth/login \
      -H "Content-Type: application/json" \
@@ -151,6 +162,7 @@ This API uses JWT (JSON Web Tokens) for authentication.
 ## Postman Testing Scripts
 
 ### Post-response Script (Login)
+
 Add this script in the **Tests** tab of your login request to store the token in environment variable `token`.
 
 ```javascript
@@ -158,15 +170,16 @@ const response = pm.response.json();
 
 // Check if the token exists in the response
 if (response.token) {
-   // Save token to Postman environment variable named "token"
-   pm.environment.set("token", response.token);
-   console.log("Token saved to environment:", response.token);
+  // Save token to Postman environment variable named "token"
+  pm.environment.set("token", response.token);
+  console.log("Token saved to environment:", response.token);
 } else {
-   console.warn("Token not found in response");
+  console.warn("Token not found in response");
 }
 ```
 
 ### Pre-request Script (All Requests)
+
 Add this script in the **Pre-request Script** tab for requests that need authorization.
 
 ```javascript
@@ -174,25 +187,26 @@ const path = pm.request.url.getPath(); // e.g., "api/v1/auth/register"
 
 // Check if the path includes "register"
 if (!path.includes("register")) {
-   // Only add token for requests other than register
-   const token = pm.environment.get("token");
-   if (token) {
-      pm.request.headers.add({
-         key: "Authorization",
-         value: `Bearer ${token}`
-      });
-      console.log("Authorization header added with token");
-   } else {
-      console.warn("No token found in environment");
-   }
+  // Only add token for requests other than register
+  const token = pm.environment.get("token");
+  if (token) {
+    pm.request.headers.add({
+      key: "Authorization",
+      value: `Bearer ${token}`,
+    });
+    console.log("Authorization header added with token");
+  } else {
+    console.warn("No token found in environment");
+  }
 } else {
-   console.log("Skipping Authorization header for register endpoint");
+  console.log("Skipping Authorization header for register endpoint");
 }
 ```
 
 ## Development
 
 ### Running in Development Mode
+
 ```bash
 npm start
 ```
@@ -200,21 +214,22 @@ npm start
 The server will restart automatically with nodemon (if configured).
 
 ### Database Seeding
+
 To seed the database with sample data, you can use the seed file in `config/seed.js`.
 
 ## Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| express | ~4.16.1 | Web framework |
-| mongoose | ^9.3.1 | MongoDB ODM |
-| jsonwebtoken | ^9.0.3 | JWT authentication |
-| bcrypt | ^6.0.0 | Password hashing |
-| dotenv | ^17.3.1 | Environment variables |
-| jade | ~1.11.0 | Template engine |
-| morgan | ~1.9.1 | HTTP logging |
-| cookie-parser | ~1.4.4 | Cookie parsing |
-| http-errors | ~1.6.3 | Error handling |
+| Package       | Version | Purpose               |
+| ------------- | ------- | --------------------- |
+| express       | ~4.16.1 | Web framework         |
+| mongoose      | ^9.3.1  | MongoDB ODM           |
+| jsonwebtoken  | ^9.0.3  | JWT authentication    |
+| bcrypt        | ^6.0.0  | Password hashing      |
+| dotenv        | ^17.3.1 | Environment variables |
+| jade          | ~1.11.0 | Template engine       |
+| morgan        | ~1.9.1  | HTTP logging          |
+| cookie-parser | ~1.4.4  | Cookie parsing        |
+| http-errors   | ~1.6.3  | Error handling        |
 
 ## Error Handling
 
@@ -227,6 +242,7 @@ The API returns standardized error responses in JSON format:
 ```
 
 Common HTTP status codes:
+
 - `200 OK` - Request successful
 - `201 Created` - Resource created
 - `400 Bad Request` - Invalid request data

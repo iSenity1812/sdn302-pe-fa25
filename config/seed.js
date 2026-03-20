@@ -2,9 +2,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 const connectDB = require('./database');
-const { Nation } = require('../models/nation');
-const { Food }= require('../models/food');
-const { User } = require('../models/user');
+const Nation = require('../models/nation');
+const Food = require('../models/food');
+const User = require('../models/user');
 
 const nationsData = require('../data/nations.json');
 const foodsData = require('../data/foods.json');
@@ -24,6 +24,8 @@ const seedData = async () => {
       _id: n._id ? new mongoose.Types.ObjectId(n._id.$oid) : undefined
     }));
 
+    await Nation.insertMany(nations);
+
     // convert _id + map nation for food
     const foods = foodsData.map(food => ({
       ...food,
@@ -40,10 +42,8 @@ const seedData = async () => {
     await User.insertMany(users);
 
     console.log('Database seeded successfully');
-    process.exit(0);
   } catch (error) {
     console.error('Error seeding database:', error);
-    process.exit(1);
   }
 }
 

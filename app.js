@@ -10,9 +10,11 @@ var indexRouter = require('./routes/index');
 
 connectDB();
 var app = express();
+// seedData = require('./config/seed');
 // view engine setup
+const viewEngine = process.env.VIEW_ENGINE;
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', viewEngine);
 
 app.use(logger('dev'));
 app.use(express.json());
