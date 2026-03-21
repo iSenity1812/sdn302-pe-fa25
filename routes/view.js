@@ -19,60 +19,8 @@ const buttonTemplate = Handlebars.compile(buttonTemplateSource);
 const cardTemplate = Handlebars.compile(cardTemplateSource);
 
 router.get('/', (req, res) => {
-    const heroButtons = [
-        {
-            type: 'button',
-            label: 'Start free trial',
-            className: 'border-transparent bg-cyan-400 text-slate-950 hover:bg-cyan-300',
-        },
-        {
-            href: '#pricing',
-            label: 'View pricing',
-            className: 'border-slate-500/60 bg-white/5 text-slate-100 backdrop-blur hover:border-slate-400',
-        },
-    ];
-
-    const planCards = [
-        {
-            badge: 'Starter',
-            badgeClass: 'border border-slate-200 bg-slate-50 text-slate-700',
-            title: 'Launch',
-            description: 'Perfect for small teams validating product-market fit.',
-            price: '$19/month',
-            points: ['Up to 3 team members', 'Basic analytics', 'Community support'],
-            ctaLabel: 'Choose plan',
-            ctaHref: '#',
-            ctaClass: 'bg-slate-900 hover:bg-slate-700',
-        },
-        {
-            accent: 'bg-cyan-100/80',
-            badge: 'Most Popular',
-            badgeClass: 'border border-cyan-100 bg-cyan-50 text-cyan-700',
-            title: 'Growth',
-            description: 'Scale faster with analytics, team permissions, and advanced automations.',
-            price: '$59/month',
-            points: ['Unlimited projects', 'Role-based permissions', 'Priority support'],
-            ctaLabel: 'Start free trial',
-            ctaHref: '#',
-            ctaClass: 'bg-slate-900 hover:bg-slate-700',
-        },
-        {
-            badge: 'Enterprise',
-            badgeClass: 'border border-slate-200 bg-slate-50 text-slate-700',
-            title: 'Scale',
-            description: 'Advanced security, dedicated support, and custom integrations.',
-            price: 'Custom',
-            points: ['SAML + SSO', 'Dedicated account manager', 'SLA and onboarding'],
-            ctaLabel: 'Contact sales',
-            ctaHref: '#',
-            ctaClass: 'bg-slate-900 hover:bg-slate-700',
-        },
-    ];
-
-    res.render('ejs/landing', {
-        heroButtonsHtml: heroButtons.map((buttonProps) => buttonTemplate(buttonProps)),
-        planCardsHtml: planCards.map((cardProps) => cardTemplate(cardProps)),
-    });
+    // Redirect to foods page
+    res.redirect('/page/foods');
 });
 
 router.get('/page/foods', authenticateView, async (req, res) => {
@@ -103,6 +51,7 @@ router.get('/page/foods', authenticateView, async (req, res) => {
                 `Nation: ${nationName}`,
                 `Category: ${food.isVegetarian ? 'Vegetarian' : 'Non-vegetarian'}`,
             ],
+            foodId: food._id,
             ctaLabel: 'View Details',
             ctaHref: `/page/foods/${food._id}`,
             ctaClass: 'bg-slate-900 hover:bg-slate-700',
@@ -245,6 +194,7 @@ router.post('/page/foods', authenticateView, async (req, res) => {
                     description: `${food.calories} calories • ${food.isVegetarian ? '🌱 Vegetarian' : '🍖 Non-vegetarian'}`,
                     price: `${food.rating}/5 ★`,
                     points: [nationName],
+                    foodId: food._id,
                     ctaLabel: 'View Details',
                     ctaHref: `/page/foods/${food._id}`,
                     ctaClass: 'bg-slate-900 hover:bg-slate-700',
@@ -280,6 +230,22 @@ router.post('/page/foods', authenticateView, async (req, res) => {
     } catch (error) {
         console.error('Error creating food:', error);
         res.status(500).json({ error: 'Error creating food' });
+    }
+});
+
+// Delete Food Route
+router.delete('/page/foods/:id', authenticateView, async (req, res) => {
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+        const foodId = req.params.id;
+
+        // Delete food via API
+        await apiClient.delete(`/api/v1/foods/${foodId}`, token);
+
+        res.json({ message: 'Food deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting food:', error);
+        res.status(500).json({ error: 'Failed to delete food' });
     }
 });
 

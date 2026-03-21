@@ -36,16 +36,26 @@
 			</ul>
 		{{/if}}
 
-		{{#if ctaLabel}}
-			<div class="mt-6">
+		<div class="mt-6 flex gap-3">
+			{{#if ctaLabel}}
 				<a
 					href="{{ctaHref}}"
-					class="inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition {{ctaClass}}"
+					class="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition {{ctaClass}}"
 				>
 					{{ctaLabel}}
 				</a>
-			</div>
-		{{/if}}
+			{{/if}}
+
+			{{#if foodId}}
+				<button
+					onclick="deleteFood('{{foodId}}')"
+					class="px-4 py-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition text-sm font-semibold"
+					type="button"
+				>
+					🗑️ Delete
+				</button>
+			{{/if}}
+		</div>
 
 		{{#if @partial-block}}
 			<div class="mt-6">
