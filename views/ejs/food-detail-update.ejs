@@ -1,0 +1,126 @@
+<div id="updateFoodModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+	<div class="w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
+		<div class="mb-6 flex items-center justify-between">
+			<h3 class="text-xl font-bold text-slate-900">Update Food</h3>
+			<button
+				type="button"
+				onclick="closeUpdateFoodModal()"
+				class="rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+			>
+				✕
+			</button>
+		</div>
+
+		<form action="/page/foods/<%= food._id %>/update" method="POST" class="space-y-4">
+			<div class="grid gap-4 sm:grid-cols-2">
+				<div>
+					<label for="foodName" class="mb-1 block text-sm font-medium text-slate-700">Food Name</label>
+					<input
+						id="foodName"
+						name="foodName"
+						type="text"
+						required
+						value="<%= food.foodName %>"
+						class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+					/>
+				</div>
+
+				<div>
+					<label for="calories" class="mb-1 block text-sm font-medium text-slate-700">Calories</label>
+					<input
+						id="calories"
+						name="calories"
+						type="number"
+						min="700"
+						max="1500"
+						required
+						value="<%= food.calories %>"
+						class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+					/>
+				</div>
+			</div>
+
+			<div>
+				<label for="foodDescription" class="mb-1 block text-sm font-medium text-slate-700">Description</label>
+				<textarea
+					id="foodDescription"
+					name="foodDescription"
+					rows="3"
+					required
+					class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+				><%= food.foodDescription || '' %></textarea>
+			</div>
+
+			<div>
+				<label for="imageUrl" class="mb-1 block text-sm font-medium text-slate-700">Image URL</label>
+				<input
+					id="imageUrl"
+					name="imageUrl"
+					type="url"
+					required
+					value="<%= food.imageUrl || '' %>"
+					class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+				/>
+			</div>
+
+			<div class="grid gap-4 sm:grid-cols-3">
+				<div>
+					<label for="rating" class="mb-1 block text-sm font-medium text-slate-700">Rating (1-5)</label>
+					<input
+						id="rating"
+						name="rating"
+						type="number"
+						min="1"
+						max="5"
+						required
+						value="<%= food.rating %>"
+						class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+					/>
+				</div>
+
+				<div class="sm:col-span-2">
+					<label for="nation" class="mb-1 block text-sm font-medium text-slate-700">Nation</label>
+					<select
+						id="nation"
+						name="nation"
+						required
+						class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+					>
+						<% const selectedNationId = (food.nation && food.nation._id) ? String(food.nation._id) : String(food.nation || ''); %>
+						<% (nations || []).forEach((nation) => { %>
+							<option value="<%= nation._id %>" <%= selectedNationId === String(nation._id) ? 'selected' : '' %>>
+								<%= nation.nationName || nation.name %>
+							</option>
+						<% }); %>
+					</select>
+				</div>
+			</div>
+
+			<label class="inline-flex items-center gap-2 text-sm text-slate-700">
+				<input
+					name="isVegetarian"
+					type="checkbox"
+					class="h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+					<%= food.isVegetarian ? 'checked' : '' %>
+				/>
+				Vegetarian
+			</label>
+
+			<div class="flex justify-end gap-3 pt-2">
+				<button
+					type="button"
+					onclick="closeUpdateFoodModal()"
+					class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+				>
+					Cancel
+				</button>
+				<button
+					type="submit"
+					class="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-700"
+				>
+					Save Changes
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

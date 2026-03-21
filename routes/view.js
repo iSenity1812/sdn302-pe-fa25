@@ -51,7 +51,6 @@ router.get('/page/foods', authenticateView, async (req, res) => {
                 `Nation: ${nationName}`,
                 `Category: ${food.isVegetarian ? 'Vegetarian' : 'Non-vegetarian'}`,
             ],
-            foodId: food._id,
             ctaLabel: 'View Details',
             ctaHref: `/page/foods/${food._id}`,
             ctaClass: 'bg-slate-900 hover:bg-slate-700',
@@ -115,6 +114,7 @@ router.get('/page/foods/:id', authenticateView, async (req, res) => {
 
         res.render('ejs/food-detail', {
             food: foodWithNation,
+            nations: nationsData,
             relatedFoods: relatedFoods.map((cardProps) => cardTemplate(cardProps)),
         });
     } catch (error) {
@@ -194,7 +194,6 @@ router.post('/page/foods', authenticateView, async (req, res) => {
                     description: `${food.calories} calories • ${food.isVegetarian ? '🌱 Vegetarian' : '🍖 Non-vegetarian'}`,
                     price: `${food.rating}/5 ★`,
                     points: [nationName],
-                    foodId: food._id,
                     ctaLabel: 'View Details',
                     ctaHref: `/page/foods/${food._id}`,
                     ctaClass: 'bg-slate-900 hover:bg-slate-700',
@@ -230,6 +229,72 @@ router.post('/page/foods', authenticateView, async (req, res) => {
     } catch (error) {
         console.error('Error creating food:', error);
         res.status(500).json({ error: 'Error creating food' });
+    }
+});
+
+// Update Food Route
+router.post('/page/foods/:id/update', authenticateView, async (req, res) => {
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+        const foodId = req.params.id;
+        const { foodName, foodDescription, imageUrl, calories, rating, nation, isVegetarian } = req.body;
+
+        const errors = {};
+
+        if (!foodName || !/^[a-zA-Z\s]+$/.test(foodName)) {
+            errors.foodName = 'Food name must contain only letters and spaces';
+        }
+
+        const caloriesNum = parseInt(calories, 10);
+        if (isNaN(caloriesNum) || caloriesNum < 700 || caloriesNum > 1500) {
+            errors.calories = 'Calories must be a number between 700 and 1500';
+        }
+
+        if (!foodDescription || !foodDescription.trim()) {
+            errors.foodDescription = 'Food description is required';
+        }
+
+        if (!imageUrl || !imageUrl.trim()) {
+            errors.imageUrl = 'Image URL is required';
+        } else {
+            try {
+                new URL(imageUrl);
+            } catch (_error) {
+                errors.imageUrl = 'Image URL must be a valid URL';
+            }
+        }
+
+        const ratingNum = parseInt(rating, 10);
+        if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+            errors.rating = 'Rating must be a number between 1 and 5';
+        }
+
+        if (!nation) {
+            errors.nation = 'Nation is required';
+        }
+
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({ errors });
+        }
+
+        await apiClient.put(
+            `/api/v1/foods/${foodId}`,
+            {
+                foodName,
+                foodDescription,
+                imageUrl,
+                calories: caloriesNum,
+                rating: ratingNum,
+                nation,
+                isVegetarian: isVegetarian === 'on' || isVegetarian === true,
+            },
+            token
+        );
+
+        res.redirect(`/page/foods/${foodId}`);
+    } catch (error) {
+        console.error('Error updating food:', error);
+        res.status(500).json({ error: 'Error updating food' });
     }
 });
 
